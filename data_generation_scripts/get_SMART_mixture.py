@@ -90,7 +90,7 @@ def download_flan2022():
     print("Check if FLAN 2022 dataset is already downloaded. If not, download it and load it")
     for submixture in SUBMIXTURES:
         print(f"Loading {submixture} dataset...")
-        dataset=load_dataset(f"{HUB_USERNAME}/{submixture}-submix-4096")
+        dataset=load_dataset(f"kowndinya23/{submixture}-submix-4096")
         print(dataset)
 
 def compute_prompt_embeddings():
@@ -109,7 +109,7 @@ def compute_prompt_embeddings():
         model=SentenceTransformer("thenlper/gte-large")
         for submixture in SUBMIXTURES:
             print(f"Generating embeddings for {submixture} prompts")
-            submixture_data=load_dataset(f"{HUB_USERNAME}/{submixture}-submix-{CONTEXT_LEN}")["train"]
+            submixture_data=load_dataset(f"kowndinya23/{submixture}-submix-{CONTEXT_LEN}")["train"]
             prompts=submixture_data["inputs"]
             pool=model.start_multi_process_pool(target_devices=["cuda:0", "cuda:1", "cuda:2", "cuda:3", "cuda:4", "cuda:5", "cuda:6", "cuda:7"])
             start_time=time.time()
@@ -138,7 +138,7 @@ def get_task_indices():
         os.makedirs("task_indices", exist_ok=True)
         for submixture in SUBMIXTURES:
             print(f"Processing {submixture}")
-            submixture_data=load_dataset(f"{HUB_USERNAME}/{submixture}-submix-{CONTEXT_LEN}")["train"]
+            submixture_data=load_dataset(f"kowndinya23/{submixture}-submix-{CONTEXT_LEN}")["train"]
             TASKS=submixture_data.features["task_name"].names
             task_labels=submixture_data["task_name"]
             template_types=submixture_data["template_type"]
@@ -408,7 +408,7 @@ def get_final_dataset(indices):
     submixture_train_datasets=[]
     submixture_val_datasets=[]
     for submixture in SUBMIXTURES:
-        submixture_data=load_dataset(f"{HUB_USERNAME}/{submixture}-submix-{CONTEXT_LEN}")
+        submixture_data=load_dataset(f"kowndinya23/{submixture}-submix-{CONTEXT_LEN}")
         submixture_train_datasets.append(submixture_data["train"].select(indices[submixture]).remove_columns(["task_source", "task_name", "template_type"]))
         submixture_val_datasets.append(submixture_data["validation"].remove_columns(["task_source", "task_name", "template_type"]))
     train_dataset=datasets.concatenate_datasets(submixture_train_datasets)

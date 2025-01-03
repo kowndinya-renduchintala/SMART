@@ -50,8 +50,8 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 RUN sudo apt-get install git-lfs
 
 # Select SMART Mixture
-CMD ["./get_SMART_mixture.sh"]
+# CMD ["./get_SMART_mixture.sh"]
 
 # Trigger the training
-# CMD ["./instruction_tuner.sh"]
+CMD ["./instruction_tuner.sh"]
 
